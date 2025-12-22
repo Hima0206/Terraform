@@ -8,6 +8,7 @@ on:
 
 jobs:
   gitleaks-scan:
+    name: Gitleaks Scan (Docker)
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +18,21 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks using Docker
-        uses: docker://zricethezav/gitleaks:latest
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/repo \
+            -w /repo \
+            zricethezav/gitleaks:latest \
+            sh -c "git config --global --add safe.directory /repo && \
+                   gitleaks detect \
+                   --source . \
+                   --redact \
+                   --exit-code 1 \
+                   --report-path gitleaks-report.json"
+
+      - name: Upload Gitleaks report
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          args: >
-            detect
-            --source .
-            --redact
-            --exit-code 1
-            --report-path gitleaks-report.json
+          name: gitleaks-report
+          path: gitleaks-report.json
