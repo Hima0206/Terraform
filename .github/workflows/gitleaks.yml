@@ -22,6 +22,6 @@ jobs:
           args: >
             detect
             --source .
-            --config .gitleaks.yaml
             --redact
             --exit-code 1
+            --report-path gitleaks-report.json
