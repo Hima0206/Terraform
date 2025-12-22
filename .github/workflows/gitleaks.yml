@@ -17,17 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure safe.directory on runner
-        run: git config --global --add safe.directory "${{ github.workspace }}"
-
       - name: Run Gitleaks
-        uses: zricethezav/gitleaks-action@v2
-        with:
-          args: detect --source . --redact --exit-code 1 --report-path gitleaks-report.json
-
-      - name: Upload Gitleaks report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gitleaks-report
-          path: gitleaks-report.json
+        uses: zricethezav/gitleaks-action@v8
+        env:
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "true"
