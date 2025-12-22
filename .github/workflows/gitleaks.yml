@@ -6,33 +6,24 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   gitleaks-scan:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Step 2: Run Gitleaks scan using the action
       - name: Run Gitleaks scan
         uses: zricethezav/gitleaks-action@v2
-        with:
-          version: 8.24.3
-          args: detect --source . --redact --exit-code 1 --report-path gitleaks-report.json --report-format=sarif
 
-      # Step 3: Upload Gitleaks JSON report
-      - name: Upload Gitleaks JSON report
-        uses: actions/upload-artifact@v4
+      - name: Upload Gitleaks SARIF to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          name: gitleaks-report
-          path: gitleaks-report.json
-
-      # Step 4 (optional): Upload SARIF report for GitHub Code Scanning
-      - name: Upload Gitleaks SARIF report
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: gitleaks-report.json
+          sarif_file: results.sarif
