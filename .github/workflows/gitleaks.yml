@@ -1,0 +1,27 @@
+name: gitleaks-CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  gitleaks-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks using Docker
+        uses: docker://zricethezav/gitleaks:latest
+        with:
+          args: >
+            detect
+            --source .
+            --config .gitleaks.yaml
+            --redact
+            --exit-code 1
