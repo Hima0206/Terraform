@@ -21,16 +21,15 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks scan
-        uses: zricethezav/gitleaks-action@v2
-        env:
-          GITLEAKS_ARGS: >
-            detect
-            --source .
-            --redact
-            --exit-code 1
-            --report-format sarif
+        run: |
+          gitleaks detect \
+            --source . \
+            --log-opts="--all" \
+            --redact \
+            --exit-code 1 \
+            --report-format sarif \
             --report-path results.sarif
-            --log-opts=--all
+
 
 
       - name: Upload Gitleaks SARIF to GitHub Security
