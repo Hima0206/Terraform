@@ -36,8 +36,7 @@ jobs:
             --log-opts="--all" \
             --redact \
             --exit-code 1 \
-            --report-format sarif \
-            --report-path results.sarif
+
 
 
 
