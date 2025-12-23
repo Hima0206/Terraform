@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  security-events: write
 
 jobs:
   gitleaks-scan:
@@ -40,7 +39,8 @@ jobs:
             --report-format sarif \
             --report-path results.sarif
 
-      - name: Upload SARIF to GitHub
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload SARIF as artifact
+        uses: actions/upload-artifact@v4
         with:
-          sarif_file: results.sarif
+          name: gitleaks-results
+          path: results.sarif
