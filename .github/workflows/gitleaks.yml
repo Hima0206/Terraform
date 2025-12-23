@@ -39,8 +39,8 @@ jobs:
             --report-format sarif \
             --report-path results.sarif
 
-      - name: Upload SARIF as artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload SARIF to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v3
         with:
-          name: gitleaks-results
-          path: results.sarif
+          sarif_file: results.sarif
+
