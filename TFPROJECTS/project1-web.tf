@@ -1,7 +1,7 @@
 provider "aws" {
     region = "us-east-1"
     profile = "default"
-    ACCESS_KEY = AKIATESTBANHYDMUMDL
+    AWS_ACCESS_KEY = AKIATESTBANHYDMUMDL
 }
 
 
@@ -149,3 +149,4 @@ output "web_server_ip" {
     description = "Public IP of the web server"     
 
 }
+
